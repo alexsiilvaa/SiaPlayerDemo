@@ -213,6 +213,7 @@ typedef struct VideoState {
     SDL_cond *continue_read_thread;
 } VideoState;
 
+void do_init();
 void do_exit(VideoState *is);
 VideoState *stream_open(const char *filename, AVInputFormat *iformat);
 

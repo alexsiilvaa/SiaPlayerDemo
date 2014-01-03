@@ -15,13 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="SiaPlayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SiaPlayerImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="inttypes.h">
@@ -36,15 +30,27 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SiaPlayerImpl2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SiaPlayerImpl.c">
+    <ClCompile Include="SiaPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SiaPlayer.cpp">
+    <ClCompile Include="SiaUtils.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SiaPlayerImpl2.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoState.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

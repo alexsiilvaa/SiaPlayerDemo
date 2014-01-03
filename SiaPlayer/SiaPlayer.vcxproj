@@ -60,6 +60,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(SolutionDir)\..\fmpeg-dev\lib\swscale.lib;$(SolutionDir)\..\fmpeg-dev\lib\avcodec.lib;$(SolutionDir)\..\fmpeg-dev\lib\avformat.lib;$(SolutionDir)\..\fmpeg-dev\lib\avutil.lib;$(SolutionDir)\..\fmpeg-dev\lib\swresample.lib;$(SolutionDir)\..\SDL-1.2.15\lib\x86\SDL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\dev\siavid\fmpeg-dev\lib;C:\dev\siavid\SDL-1.2.15\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -79,15 +80,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="inttypes.h" />
     <ClInclude Include="SiaPlayer.h" />
-    <ClInclude Include="SiaPlayerImpl.h" />
+    <ClInclude Include="SiaPlayerImpl2.h" />
     <ClInclude Include="SiaUtils.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="stdint.h" />
+    <ClInclude Include="VideoState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -99,7 +98,9 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SiaPlayer.cpp" />
-    <ClCompile Include="SiaPlayerImpl.c" />
+    <ClCompile Include="SiaPlayerImpl2.c" />
+    <ClCompile Include="SiaUtils.c" />
+    <ClCompile Include="VideoState.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -935,6 +935,7 @@ static int read_thread(void *arg)
     int pkt_in_play_range = 0;
     AVDictionaryEntry *t;
     AVDictionary **opts;
+	AVDictionary *optttttts;
     int orig_nb_streams;
     SDL_mutex *wait_mutex = SDL_CreateMutex();
 
@@ -946,68 +947,40 @@ static int read_thread(void *arg)
     ic = avformat_alloc_context();
     ic->interrupt_callback.callback = decode_interrupt_cb;
     ic->interrupt_callback.opaque = is;
-	// TODO: fixme
-    // err = avformat_open_input(&ic, is->filename, is->iformat, &format_opts);
-	err = avformat_open_input(&ic, is->filename, is->iformat, NULL);
+	err = avformat_open_input(&ic, is->filename, NULL, NULL);
     if (err < 0) {
-       // print_error(is->filename, err);
+        print_error(is->filename, err);
         ret = -1;
         goto fail;
     }
-	//TODO: fixme
-/*    if ((t = av_dict_get(format_opts, "", NULL, AV_DICT_IGNORE_SUFFIX))) {
-        av_log(NULL, AV_LOG_ERROR, "Option %s not found.\n", t->key);
-        ret = AVERROR_OPTION_NOT_FOUND;
-        goto fail;
-    }
-	*/
     is->ic = ic;
-
     if (genpts)
         ic->flags |= AVFMT_FLAG_GENPTS;
 
 	// todo: fixme 
-    // vopts = setup_find_stream_info_opts(ic, codec_opts);
-	opts = NULL;
-    orig_nb_streams = ic->nb_streams;
+    // opts = setup_find_stream_info_opts(ic, codec_opts);
+   // orig_nb_streams = ic->nb_streams;
 
-    err = avformat_find_stream_info(ic, opts);
+	// Retrieve information about the streams contained in the file 
+	// This fills the streams field of the AVFormatContext with valid information
+    err = avformat_find_stream_info(ic, NULL);
     if (err < 0) {
         av_log(NULL, AV_LOG_WARNING,
                "%s: could not find codec parameters\n", is->filename);
         ret = -1;
         goto fail;
     }
+	/*
     for (i = 0; i < orig_nb_streams; i++)
         av_dict_free(&opts[i]);
     av_freep(&opts);
+	*/
 
     if (ic->pb)
         ic->pb->eof_reached = 0; // FIXME hack, ffplay maybe should not use url_feof() to test for the end
-
     if (seek_by_bytes < 0)
         seek_by_bytes = !!(ic->iformat->flags & AVFMT_TS_DISCONT) && strcmp("ogg", ic->iformat->name);
-
     is->max_frame_duration = (ic->iformat->flags & AVFMT_TS_DISCONT) ? 10.0 : 3600.0;
-
-    if (!window_title && (t = av_dict_get(ic->metadata, "title", NULL, 0)))
-        window_title = av_asprintf("%s - %s", t->value, input_filename);
-
-    /* if seeking requested, we execute it */
-    if (start_time != AV_NOPTS_VALUE) {
-        int64_t timestamp;
-
-        timestamp = start_time;
-        /* add the stream start time */
-        if (ic->start_time != AV_NOPTS_VALUE)
-            timestamp += ic->start_time;
-        ret = avformat_seek_file(ic, -1, INT64_MIN, timestamp, INT64_MAX, 0);
-        if (ret < 0) {
-            av_log(NULL, AV_LOG_WARNING, "%s: could not seek to position %0.3f\n",
-                    is->filename, (double)timestamp / AV_TIME_BASE);
-        }
-    }
-
     is->realtime = is_realtime(ic);
 
     for (i = 0; i < ic->nb_streams; i++)
@@ -1016,20 +989,6 @@ static int read_thread(void *arg)
         st_index[AVMEDIA_TYPE_VIDEO] =
             av_find_best_stream(ic, AVMEDIA_TYPE_VIDEO,
                                 wanted_stream[AVMEDIA_TYPE_VIDEO], -1, NULL, 0);
-    if (!audio_disable)
-        st_index[AVMEDIA_TYPE_AUDIO] =
-            av_find_best_stream(ic, AVMEDIA_TYPE_AUDIO,
-                                wanted_stream[AVMEDIA_TYPE_AUDIO],
-                                st_index[AVMEDIA_TYPE_VIDEO],
-                                NULL, 0);
-    if (!video_disable && !subtitle_disable)
-        st_index[AVMEDIA_TYPE_SUBTITLE] =
-            av_find_best_stream(ic, AVMEDIA_TYPE_SUBTITLE,
-                                wanted_stream[AVMEDIA_TYPE_SUBTITLE],
-                                (st_index[AVMEDIA_TYPE_AUDIO] >= 0 ?
-                                 st_index[AVMEDIA_TYPE_AUDIO] :
-                                 st_index[AVMEDIA_TYPE_VIDEO]),
-                                NULL, 0);
     if (show_status) {
         av_dump_format(ic, 0, is->filename, 0);
     }
@@ -1312,3 +1271,8 @@ void do_exit(VideoState *is)
     exit(0);
 }
 
+void do_init() 
+{
+	av_register_all();
+    avformat_network_init();
+}

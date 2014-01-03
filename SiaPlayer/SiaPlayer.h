@@ -7,11 +7,15 @@
 #define SIAPLAYER_API __declspec(dllimport) 
 #endif
 
-enum SiaRet {
-	OK,
-	FAILED_OPEN_STREAM
-};
+extern "C" {
 
-SIAPLAYER_API SiaRet __stdcall StartDecoding(const char* input_filename);
+	enum SiaRet {
+		OK,
+		FAILED_OPEN_STREAM
+	};
+
+	SIAPLAYER_API SiaRet __stdcall StartDecoding(const char* input_filename);
+
+}
 
 #endif

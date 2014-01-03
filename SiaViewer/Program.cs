@@ -17,10 +17,10 @@ namespace SiaViewer
         [STAThread]
         static void Main()
         {
+            StartDecoding("rtsp://admin:admin@169.254.0.2:8554/PSIA/Streaming/channels/0");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-            StartDecoding("test");
         }
     }
 }
