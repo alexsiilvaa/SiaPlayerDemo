@@ -1,6 +1,8 @@
 #ifndef VIDEO_STATE_H
 #define VIDEO_STATE_H
 
+#include "FrameDecodedCallback.h"
+
 #include <libavcodec\avcodec.h>
 #include <libavformat\avformat.h>
 
@@ -16,6 +18,7 @@ typedef struct
 	AVCodec* codec;
 	AVFrame* yuvFrame; 
 	SDL_Thread* videoThread;
+	FrameDecodedCallback frameCallback;
 
 } VideoState;
 

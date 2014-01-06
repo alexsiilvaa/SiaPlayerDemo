@@ -2,23 +2,21 @@
 
 extern "C" {
 
-#include "SiaPlayerImpl2.h"
+#include "SiaPlayerImpl.h"
+#include "VideoState.h"
 
-	SIAPLAYER_API SiaRet __stdcall StartDecoding(const char* input_filename)
+	SIAPLAYER_API SiaRet __stdcall 
+		StartDecoding(const char* input_filename, FrameDecodedCallback frameCallback)
 	{
-		if (stream_open2(input_filename)<0) {
+		VideoState* vs;
+		if (stream_open(input_filename, frameCallback, &vs) < 0) {
 			return FAILED_OPEN_STREAM;
 		}
+		if (start_video_thread(vs) < 0) {
+			vs_delete(vs);
+			return FAILED_START_THREAD;
+		}
 		return OK;
-
-	/*do_init();
-    VideoState* is = stream_open(input_filename, NULL);
-    if (!is) {
-	    av_log(NULL, AV_LOG_FATAL, "Failed to initialize VideoState!\n");
-        do_exit(NULL);
-	}
-	return OK;
-	*/
 	}
 
 }

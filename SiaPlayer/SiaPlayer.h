@@ -8,14 +8,16 @@
 #endif
 
 extern "C" {
+	#include "FrameDecodedCallback.h"
 
 	enum SiaRet {
 		OK,
-		FAILED_OPEN_STREAM
+		FAILED_OPEN_STREAM,
+		FAILED_START_THREAD
 	};
 
-	SIAPLAYER_API SiaRet __stdcall StartDecoding(const char* input_filename);
-
+	SIAPLAYER_API SiaRet __stdcall StartDecoding
+			(const char* input_filename, FrameDecodedCallback frameCallback);
 }
 
 #endif

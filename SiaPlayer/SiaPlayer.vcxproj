@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\SDL-1.2.15\include;$(SolutionDir)\..\fmpeg-dev\include;$(ProjectDir);$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\SDL-1.2.15\include;$(SolutionDir)\fmpeg-dev\include;$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -59,9 +59,15 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)\..\fmpeg-dev\lib\swscale.lib;$(SolutionDir)\..\fmpeg-dev\lib\avcodec.lib;$(SolutionDir)\..\fmpeg-dev\lib\avformat.lib;$(SolutionDir)\..\fmpeg-dev\lib\avutil.lib;$(SolutionDir)\..\fmpeg-dev\lib\swresample.lib;$(SolutionDir)\..\SDL-1.2.15\lib\x86\SDL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\fmpeg-dev\lib\swscale.lib;$(SolutionDir)\fmpeg-dev\lib\avcodec.lib;$(SolutionDir)\fmpeg-dev\lib\avformat.lib;$(SolutionDir)\fmpeg-dev\lib\avutil.lib;$(SolutionDir)\fmpeg-dev\lib\swresample.lib;$(SolutionDir)\SDL-1.2.15\lib\x86\SDL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\dev\siavid\fmpeg-dev\lib;C:\dev\siavid\SDL-1.2.15\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(OutDir)\$(ProjectName).dll" "..\SiaViewer\bin\Debug\$(ProjectName).dll"
+copy "$(SolutionDir)\fmpeg-dev\shared\*.dll" "..\SiaViewer\bin\Debug\"
+copy "$(SolutionDir)\SDL-1.2.15\shared\*.dll" "..\SiaViewer\bin\Debug\"
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -80,9 +86,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FrameDecodedCallback.h" />
     <ClInclude Include="inttypes.h" />
     <ClInclude Include="SiaPlayer.h" />
-    <ClInclude Include="SiaPlayerImpl2.h" />
+    <ClInclude Include="SiaPlayerImpl.h" />
     <ClInclude Include="SiaUtils.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="stdint.h" />
@@ -98,7 +105,7 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SiaPlayer.cpp" />
-    <ClCompile Include="SiaPlayerImpl2.c" />
+    <ClCompile Include="SiaPlayerImpl.c" />
     <ClCompile Include="SiaUtils.c" />
     <ClCompile Include="VideoState.c" />
   </ItemGroup>

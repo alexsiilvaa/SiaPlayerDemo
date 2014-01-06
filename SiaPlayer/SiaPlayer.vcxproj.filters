@@ -30,10 +30,13 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SiaPlayerImpl2.h">
+    <ClInclude Include="VideoState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VideoState.h">
+    <ClInclude Include="FrameDecodedCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SiaPlayerImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,10 +50,10 @@
     <ClCompile Include="SiaUtils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SiaPlayerImpl2.c">
+    <ClCompile Include="VideoState.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VideoState.c">
+    <ClCompile Include="SiaPlayerImpl.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
