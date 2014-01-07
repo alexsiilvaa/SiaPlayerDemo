@@ -15,12 +15,12 @@
 static int retrieve_video_stream(VideoState* vs)
 {
 	int ret = -1;
-	if(av_find_stream_info(vs->formatCtx)>=0) {
-		int i, videoStream;
+	if (avformat_find_stream_info(vs->formatCtx, NULL) >= 0) {
+		int i;
 		av_dump_format(vs->formatCtx, 0, vs->fileName, 0);		
 		// Find the first video stream
 		vs->videoStreamIdx = -1;
-		for(i=0; i<(vs->formatCtx->nb_streams); i++)
+		for(i=0; i<(int)(vs->formatCtx->nb_streams); i++)
 			if(AVMEDIA_TYPE_VIDEO == vs->formatCtx->streams[i]->codec->codec_type) {
 			vs->videoStreamIdx=i;
 			break;
@@ -61,7 +61,7 @@ static int video_thread(void *arg)
 	int frameFinished, numBytes;
 	uint8_t *buffer;
 
-	frameRGB=avcodec_alloc_frame();
+	frameRGB = av_frame_alloc();
 	// Determine required buffer size and allocate buffer
 	numBytes=avpicture_get_size(PIX_FMT_RGB24, vs->codecCtx->width,
 			      vs->codecCtx->height);
@@ -98,11 +98,12 @@ static int video_thread(void *arg)
 	// Free the RGB image
 	av_free(buffer);
 	av_free(frameRGB);
+	return 0;
 }
 
 int stream_open(const char *filename, FrameDecodedCallback frameCallback, VideoState** vs)
 {
-	int ret = 0, err;
+	int ret = 0;
  	*vs = vs_create(filename);
 	(*vs)->frameCallback = frameCallback;
 	av_register_all();
@@ -117,7 +118,7 @@ int stream_open(const char *filename, FrameDecodedCallback frameCallback, VideoS
 	HANDLE_ERROR(open_video_codec(*vs),filename,"Could not open video codec " \
 			"stream information\n");
 
-	(*vs)->yuvFrame = avcodec_alloc_frame();	
+	(*vs)->yuvFrame = av_frame_alloc();
 
 fail:
 	if (0 != ret) {

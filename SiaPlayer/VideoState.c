@@ -24,7 +24,7 @@ void vs_delete(VideoState* vs)
 			avcodec_close(vs->codecCtx);
 		}
 		if (NULL!=vs->formatCtx) {
-			av_close_input_file(vs->formatCtx);
+			avformat_close_input(&vs->formatCtx);
 		}  
 		free(vs);
 	}
