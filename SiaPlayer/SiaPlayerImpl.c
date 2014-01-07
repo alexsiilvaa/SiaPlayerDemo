@@ -66,7 +66,7 @@ static int video_thread(void *arg)
 	numBytes=avpicture_get_size(PIX_FMT_RGB24, vs->codecCtx->width,
 			      vs->codecCtx->height);
 	buffer=(uint8_t *)av_malloc(numBytes*sizeof(uint8_t));
-  	avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_RGB24,
+	avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_BGR24,
 		 vs->codecCtx->width, vs->codecCtx->height);
 
 	while(av_read_frame(vs->formatCtx, &packet)>=0) {
@@ -77,10 +77,10 @@ static int video_thread(void *arg)
 				avcodec_decode_video2(vs->codecCtx, vs->yuvFrame, &frameFinished, &packet);
 			if (0 > processedLength) {
 				fprintf(stderr, "%s: Error while processing video stream", vs->fileName);
-			} else {
+			} else { 
 				if(frameFinished) {		
 					// Convert the image from its native format to RGB
-					utils_img_convert((AVPicture *)frameRGB, PIX_FMT_RGB24, 
+					utils_img_convert((AVPicture *)frameRGB, PIX_FMT_BGR24,
 						(AVPicture*)vs->yuvFrame, vs->codecCtx->pix_fmt, vs->codecCtx->width, 
 							vs->codecCtx->height);
 					// An image has been written to AVFrame 
