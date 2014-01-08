@@ -9,6 +9,14 @@
 #include <SDL.h>
 #include <SDL_thread.h>
 
+struct FpsState
+{
+	long cumulTicks;
+	clock_t lastTick;
+	long cumulFrames;
+	double estFps;
+};
+
 typedef struct 
 {
 	AVFormatContext* formatCtx;
@@ -19,6 +27,7 @@ typedef struct
 	AVFrame* yuvFrame; 
 	SDL_Thread* videoThread;
 	FrameDecodedCallback frameCallback;
+	struct FpsState fpsState;
 
 } VideoState;
 

@@ -11,4 +11,6 @@ void print_error(const char *filename, int err);
 int utils_img_convert(AVPicture* dst, enum AVPixelFormat dst_pix_fmt, 
 	AVPicture* src, enum AVPixelFormat pix_fmt, int width, int height);
 
+void utils_compute_estfps(struct FpsState* fpsState, const int frames_used_avg);
+
 #endif

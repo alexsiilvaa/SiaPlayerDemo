@@ -21,3 +21,18 @@ int utils_img_convert(AVPicture* dst, enum AVPixelFormat dst_pix_fmt,
    sws_freeContext(img_convert_ctx);
    return result;
 }
+
+void utils_compute_estfps(struct FpsState* fpsState, const int frames_used_avg)
+{
+	clock_t newTick = clock();
+	long diff = newTick - fpsState->lastTick;
+	fpsState->lastTick = newTick;
+	fpsState->cumulTicks += diff;
+	fpsState->cumulFrames++;
+	if (frames_used_avg == fpsState->cumulFrames) {
+		fpsState->estFps = (double)fpsState->cumulFrames / fpsState->cumulTicks * CLOCKS_PER_SEC;
+		fpsState->cumulTicks = 0;
+		fpsState->cumulFrames = 0;
+	}
+}
+

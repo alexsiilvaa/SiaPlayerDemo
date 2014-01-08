@@ -55,6 +55,7 @@ static int open_video_codec(VideoState* vs)
 
 static int video_thread(void *arg)
 {
+#define FRAMES_FPS_AVG 50
 	AVPacket packet;
 	AVFrame* frameRGB;
 	VideoState* vs = (VideoState*)arg;
@@ -78,13 +79,15 @@ static int video_thread(void *arg)
 			if (0 > processedLength) {
 				fprintf(stderr, "%s: Error while processing video stream", vs->fileName);
 			} else { 
-				if(frameFinished) {		
+				if(frameFinished) {	
+					utils_compute_estfps(&vs->fpsState, FRAMES_FPS_AVG);
 					// Convert the image from its native format to RGB
 					utils_img_convert((AVPicture *)frameRGB, PIX_FMT_BGR24,
 						(AVPicture*)vs->yuvFrame, vs->codecCtx->pix_fmt, vs->codecCtx->width, 
 							vs->codecCtx->height);
 					// An image has been written to AVFrame 
-					vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height, frameRGB->data[0]);					
+					vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height, 
+						frameRGB->data[0], vs->fpsState.estFps);					
 				} 
 				// If frameFinished == 0, the packet didn't have enough data to read
 				// one frame, we need to read another packet ... 

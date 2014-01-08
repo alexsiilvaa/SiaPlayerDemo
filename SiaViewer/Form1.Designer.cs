@@ -35,6 +35,8 @@
             this.btnStop = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.labelEstFps = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
@@ -86,7 +88,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(388, 114);
+            this.numericUpDown1.Location = new System.Drawing.Point(388, 156);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(65, 20);
             this.numericUpDown1.TabIndex = 6;
@@ -94,17 +96,37 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(385, 98);
+            this.label2.Location = new System.Drawing.Point(385, 140);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 13);
             this.label2.TabIndex = 7;
             this.label2.Text = "FPS:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(385, 96);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(51, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Est. FPS:";
+            // 
+            // labelEstFps
+            // 
+            this.labelEstFps.AutoSize = true;
+            this.labelEstFps.Location = new System.Drawing.Point(387, 112);
+            this.labelEstFps.Name = "labelEstFps";
+            this.labelEstFps.Size = new System.Drawing.Size(28, 13);
+            this.labelEstFps.TabIndex = 9;
+            this.labelEstFps.Text = "0.00";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(477, 321);
+            this.Controls.Add(this.labelEstFps);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.btnStop);
@@ -131,6 +153,8 @@
         private System.Windows.Forms.Button btnStop;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelEstFps;
 
     }
 }
