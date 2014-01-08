@@ -138,6 +138,10 @@ int start_video_thread(VideoState* vs)
 	return 0;
 }
 
+void stop_video_thread(VideoState* vs)
+{
+	SDL_KillThread(vs->videoThread);
+}
 
      
 

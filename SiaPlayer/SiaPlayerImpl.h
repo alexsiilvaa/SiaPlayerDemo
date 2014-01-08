@@ -8,5 +8,7 @@ int stream_open(const char *filename, FrameDecodedCallback frameCallback, VideoS
 
 int start_video_thread(VideoState* vs);
 
+void stop_video_thread(VideoState* vs);
+
 #endif
 
