@@ -17,6 +17,13 @@ struct FpsState
 	double estFps;
 };
 
+struct FpsUserState
+{
+	long lastDecTick;
+	SDL_mutex* userFpsMutex;
+	double userFps;
+};
+
 typedef struct 
 {
 	AVFormatContext* formatCtx;
@@ -28,6 +35,8 @@ typedef struct
 	SDL_Thread* videoThread;
 	FrameDecodedCallback frameCallback;
 	struct FpsState fpsState;
+	struct FpsUserState fpsUserState;
+
 
 } VideoState;
 

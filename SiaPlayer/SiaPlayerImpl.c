@@ -12,6 +12,12 @@
 			goto fail; \
 		} }
 
+#define SAFE_OP(f, mutex) { if (SDL_LockMutex(mutex) == 0) { \
+				f; \
+				SDL_UnlockMutex(mutex); \
+			} else { fprintf(stderr, "[%p] Couldn't lock mutex\n", mutex); \
+			}}
+
 static int retrieve_video_stream(VideoState* vs)
 {
 	int ret = -1;
@@ -53,6 +59,19 @@ static int open_video_codec(VideoState* vs)
 	return ret;
 }
 
+static char drop_packet(struct FpsUserState* fpsUserState, clock_t currTick)
+{
+	char drop = 0;
+	long ticks = currTick - fpsUserState->lastDecTick;
+	double userFps;
+	SAFE_OP(userFps = fpsUserState->userFps, fpsUserState->userFpsMutex);
+	if (utils_fps2ticks(userFps) > ticks) {
+		return 1;
+	} 
+	fpsUserState->lastDecTick = currTick;
+	return 0;
+}
+
 static int video_thread(void *arg)
 {
 #define FRAMES_FPS_AVG 50
@@ -80,14 +99,17 @@ static int video_thread(void *arg)
 				fprintf(stderr, "%s: Error while processing video stream", vs->fileName);
 			} else { 
 				if(frameFinished) {	
-					utils_compute_estfps(&vs->fpsState, FRAMES_FPS_AVG);
-					// Convert the image from its native format to RGB
-					utils_img_convert((AVPicture *)frameRGB, PIX_FMT_BGR24,
-						(AVPicture*)vs->yuvFrame, vs->codecCtx->pix_fmt, vs->codecCtx->width, 
+					clock_t currTick = clock();
+					utils_compute_estfps(&vs->fpsState, currTick, FRAMES_FPS_AVG);
+					if (!drop_packet(&vs->fpsUserState, currTick)) {
+						// Convert the image from its native format to RGB
+						utils_img_convert((AVPicture *)frameRGB, PIX_FMT_BGR24,
+							(AVPicture*)vs->yuvFrame, vs->codecCtx->pix_fmt, vs->codecCtx->width,
 							vs->codecCtx->height);
-					// An image has been written to AVFrame 
-					vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height, 
-						frameRGB->data[0], vs->fpsState.estFps);					
+						// An image has been written to AVFrame 
+						vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
+							frameRGB->data[0], vs->fpsState.estFps, vs);
+					}
 				} 
 				// If frameFinished == 0, the packet didn't have enough data to read
 				// one frame, we need to read another packet ... 
@@ -146,7 +168,12 @@ void stop_video_thread(VideoState* vs)
 	SDL_KillThread(vs->videoThread);
 }
 
+void set_user_fps(double fps, VideoState* vs)
+{
+	SAFE_OP(vs->fpsUserState.userFps = fps, vs->fpsUserState.userFpsMutex);
+}
      
+
 
 
 

@@ -26,7 +26,7 @@ extern "C" {
 		\warning    Multiple calls to this function will start separate decoder instances.
 	*/
 	SIAPLAYER_API SiaRet __stdcall StartDecoding
-			(const char* input_filename, FrameDecodedCallback frameCallback, void** decoder_id);
+			(const char* input_filename, double fps, FrameDecodedCallback frameCallback, void** decoder_id);
 
 	/*! Stops an H.264 decoding instance
 		\param[out] Decoder instance id. This pointer contains implementation specific information.
@@ -34,6 +34,12 @@ extern "C" {
 		\warning    This function is not thread-safe.
 	*/
 	SIAPLAYER_API void __stdcall StopDecoding(void** decoder_id);
+
+	/*! Changes the FPS for a decoder instance
+		\param      User configured FPS.
+		\param      Decoder instance id. 
+	*/
+	SIAPLAYER_API void __stdcall ChangeFps(double fps, void* decoder_id);
 }
 
 #endif

@@ -6,7 +6,8 @@ extern "C" {
 #include "VideoState.h"
 
 	SIAPLAYER_API SiaRet __stdcall 
-		StartDecoding(const char* input_filename, FrameDecodedCallback frameCallback, void** decoder_id)
+		StartDecoding(const char* input_filename, double fps, 
+		FrameDecodedCallback frameCallback, void** decoder_id)
 	{
 		VideoState* vs;
 		if (NULL == decoder_id)
@@ -14,6 +15,7 @@ extern "C" {
 		if (stream_open(input_filename, frameCallback, &vs) < 0) {
 			return FAILED_OPEN_STREAM;
 		}
+		set_user_fps(fps, vs);
 		if (start_video_thread(vs) < 0) {
 			vs_delete(vs);
 			return FAILED_START_THREAD;
@@ -34,6 +36,12 @@ extern "C" {
 				}
 			}
 	}
+
+	SIAPLAYER_API void __stdcall ChangeFps(double fps, void* decoder_id)
+	{
+		set_user_fps(fps, (VideoState*)decoder_id);
+	}
+
 }
 
 

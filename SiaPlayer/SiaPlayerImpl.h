@@ -10,5 +10,7 @@ int start_video_thread(VideoState* vs);
 
 void stop_video_thread(VideoState* vs);
 
+void set_user_fps(double fps, VideoState* vs);
+
 #endif
 

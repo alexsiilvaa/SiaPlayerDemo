@@ -8,6 +8,7 @@ VideoState* vs_create(const char* fileName)
 	VideoState* vs = (VideoState*)calloc(1,sizeof(VideoState));
 	vs->fileName = (char*)calloc(SIZE_FILENAME,sizeof(char));
 	strncpy(vs->fileName, fileName, SIZE_FILENAME);
+	vs->fpsUserState.userFpsMutex = SDL_CreateMutex();
 	return vs;
 }
 
@@ -26,6 +27,9 @@ void vs_delete(VideoState* vs)
 		if (NULL!=vs->formatCtx) {
 			avformat_close_input(&vs->formatCtx);
 		}  
+		if (NULL != vs->fpsUserState.userFpsMutex) {
+			SDL_DestroyMutex(vs->fpsUserState.userFpsMutex);
+		}
 		free(vs);
 	}
 }

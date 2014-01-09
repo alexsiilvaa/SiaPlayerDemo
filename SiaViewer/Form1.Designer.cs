@@ -33,12 +33,12 @@
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.fpsValue = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.labelEstFps = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fpsValue)).BeginInit();
             this.SuspendLayout();
             // 
             // textUrl
@@ -86,17 +86,23 @@
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
-            // numericUpDown1
+            // fpsValue
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(388, 156);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(65, 20);
-            this.numericUpDown1.TabIndex = 6;
+            this.fpsValue.Location = new System.Drawing.Point(388, 151);
+            this.fpsValue.Name = "fpsValue";
+            this.fpsValue.Size = new System.Drawing.Size(65, 20);
+            this.fpsValue.TabIndex = 6;
+            this.fpsValue.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.fpsValue.ValueChanged += new System.EventHandler(this.fpsValue_ValueChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(385, 140);
+            this.label2.Location = new System.Drawing.Point(385, 135);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 13);
             this.label2.TabIndex = 7;
@@ -128,7 +134,7 @@
             this.Controls.Add(this.labelEstFps);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.numericUpDown1);
+            this.Controls.Add(this.fpsValue);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.textUrl);
@@ -138,7 +144,7 @@
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fpsValue)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -151,7 +157,7 @@
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown fpsValue;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label labelEstFps;

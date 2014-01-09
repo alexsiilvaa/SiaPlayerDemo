@@ -14,20 +14,25 @@ namespace SiaViewer
     public partial class Form1 : Form
     {
         [DllImport("SiaPlayer.dll")]
-        private static extern void StartDecoding(string url, FrameDecodedCallback callback, ref IntPtr videoId);
+        private static extern void StartDecoding(string url, double userFps, 
+            FrameDecodedCallback callback, ref IntPtr videoId);
 
         [DllImport("SiaPlayer.dll")]
         private static extern void StopDecoding(ref IntPtr videoId);
 
+        [DllImport("SiaPlayer.dll")]
+        private static extern void ChangeFps(double fps, IntPtr videoId);
+
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private delegate void FrameDecodedCallback(int FrameWidth, int FrameHeight, IntPtr FrameData, double estFps);
+        private delegate void FrameDecodedCallback(int FrameWidth, int FrameHeight, 
+            IntPtr FrameData, double estFps, IntPtr videoId);
 
         private FrameDecodedCallback callback;
         private IntPtr videoInstanceId;
 
         public Form1()
         {
-            callback = (width, height, data, estFps) => {
+            callback = (width, height, data, estFps, videoId) => {
                 Console.WriteLine("Got frame, width: {0} height: {1} [est. FPS: {2}]", 
                     width, height, estFps);
                 SetRuntimeData(width, height, data, estFps);
@@ -52,7 +57,7 @@ namespace SiaViewer
         {
             if (IntPtr.Zero == videoInstanceId)
             {
-                StartDecoding(textUrl.Text, callback, ref videoInstanceId);
+                StartDecoding(textUrl.Text, (double)fpsValue.Value, callback, ref videoInstanceId);
             }
         }
 
@@ -69,5 +74,11 @@ namespace SiaViewer
         {
             btnStop_Click(sender, e);
         }
+
+        private void fpsValue_ValueChanged(object sender, EventArgs e)
+        {
+            ChangeFps((double)fpsValue.Value, this.videoInstanceId); 
+        }
+
     }
 }
