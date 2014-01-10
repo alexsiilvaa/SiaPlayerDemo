@@ -89,6 +89,11 @@
             // fpsValue
             // 
             this.fpsValue.Location = new System.Drawing.Point(388, 151);
+            this.fpsValue.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.fpsValue.Name = "fpsValue";
             this.fpsValue.Size = new System.Drawing.Size(65, 20);
             this.fpsValue.TabIndex = 6;

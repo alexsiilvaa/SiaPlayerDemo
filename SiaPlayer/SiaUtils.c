@@ -37,7 +37,7 @@ void utils_compute_estfps(struct FpsState* fpsState, clock_t currTick, const int
 
 long utils_fps2ticks(double fps) 
 {
-	return (1. / fps) * CLOCKS_PER_SEC;
+	return (long)((1. / fps) * CLOCKS_PER_SEC);
 }
 
 

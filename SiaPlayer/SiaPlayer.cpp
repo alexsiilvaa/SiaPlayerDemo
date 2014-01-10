@@ -10,7 +10,7 @@ extern "C" {
 		FrameDecodedCallback frameCallback, void** decoder_id)
 	{
 		VideoState* vs;
-		if (NULL == decoder_id)
+		if (NULL == decoder_id || fps <= 0)
 			return WRONG_PARAMS;
 		if (stream_open(input_filename, frameCallback, &vs) < 0) {
 			return FAILED_OPEN_STREAM;
@@ -37,9 +37,12 @@ extern "C" {
 			}
 	}
 
-	SIAPLAYER_API void __stdcall ChangeFps(double fps, void* decoder_id)
+	SIAPLAYER_API SiaRet __stdcall ChangeFps(double fps, void* decoder_id)
 	{
+		if (NULL == decoder_id || fps <= 0)
+			return WRONG_PARAMS;
 		set_user_fps(fps, (VideoState*)decoder_id);
+		return OK;
 	}
 
 }

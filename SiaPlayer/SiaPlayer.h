@@ -19,6 +19,8 @@ extern "C" {
 
 	/*! Starts an H.264 decoding instance
 		\param[in]  RTSP url of the H.264 flux.
+		\param[in]  User configured FPS. Will be used only for subsampling, in other words, if this parameter 
+					is higher than then stream FPS, it shall have no effect.
 		\param[in]  Callback that will be called with the decoded frames
 		\param[out] When the return value is SiaRet.OK, it contains the newly created decoder instance id. 
 				    This pointer contains implementation specific information. Must not be deleted or de-referenced.
@@ -36,10 +38,11 @@ extern "C" {
 	SIAPLAYER_API void __stdcall StopDecoding(void** decoder_id);
 
 	/*! Changes the FPS for a decoder instance
-		\param      User configured FPS.
-		\param      Decoder instance id. 
+		\param[in]  User configured FPS. Will be used only for subsampling, in other words, if this parameter
+					is higher than then stream FPS, it shall have no effect.
+		\param[in]  Decoder instance id.
 	*/
-	SIAPLAYER_API void __stdcall ChangeFps(double fps, void* decoder_id);
+	SIAPLAYER_API SiaRet __stdcall ChangeFps(double fps, void* decoder_id);
 }
 
 #endif
