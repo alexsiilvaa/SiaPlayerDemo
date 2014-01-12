@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.IO;
+using System.Windows.Media.Imaging;
 
 namespace SiaViewer
 {
@@ -52,8 +54,33 @@ namespace SiaViewer
                 Invoke(new MethodInvoker(() => SetRuntimeData(width, height, img, size, estFps)));
                 return;
             }
-            pictureBox.Image = new Bitmap(width,height,3*width,PixelFormat.Format24bppRgb,img);
+            switch (comboType.SelectedIndex)
+            {
+                case FMT_BGR_24BPP:
+                    pictureBox.Image = new Bitmap(width, height, 3 * width, PixelFormat.Format24bppRgb, img);
+                    break;
+                case FMT_JPEG:
+                    byte[] img_data = new byte[size];
+                    Marshal.Copy(img, img_data, 0, size);
+                    using (Stream stream = new MemoryStream(img_data)) {
+                        pictureBox.Image = JpegToBitmap(stream);
+                    }
+                    break;
+            }
+
             labelEstFps.Text = string.Format("{0:N2}", estFps);
+        }
+
+        private Bitmap JpegToBitmap(Stream jpg)
+        {
+            JpegBitmapDecoder ldDecoder = new JpegBitmapDecoder(jpg, BitmapCreateOptions.None, BitmapCacheOption.None);
+            BitmapFrame lfFrame = ldDecoder.Frames[0];
+            Bitmap lbmpBitmap = new Bitmap(lfFrame.PixelWidth, lfFrame.PixelHeight);
+            Rectangle lrRect = new Rectangle(0, 0, lbmpBitmap.Width, lbmpBitmap.Height);
+            BitmapData lbdData = lbmpBitmap.LockBits(lrRect, ImageLockMode.WriteOnly, (lfFrame.Format.BitsPerPixel == 24 ? PixelFormat.Format24bppRgb : PixelFormat.Format32bppArgb));
+            lfFrame.CopyPixels(System.Windows.Int32Rect.Empty, lbdData.Scan0, lbdData.Height * lbdData.Stride, lbdData.Stride);
+            lbmpBitmap.UnlockBits(lbdData);
+            return lbmpBitmap;
         }
 
         private void btnStart_Click(object sender, EventArgs e)

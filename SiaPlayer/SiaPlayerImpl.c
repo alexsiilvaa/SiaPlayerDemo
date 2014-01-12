@@ -97,8 +97,6 @@ static int video_thread(void *arg)
 					clock_t currTick = clock();
 					utils_compute_estfps(&vs->fpsState, currTick, FRAMES_FPS_AVG);
 					if (!drop_packet(&vs->fpsUserState, currTick)) {
-						uint8_t* jpegBuff; 
-						utils_encode_jpeg(vs->codecOCtx, vs->pict_size, vs->yuvFrame, &jpegBuff);
 						if (FMT_BGR_24BPP == vs->fmt_out_type) {
 							// Convert the image from its native format to RGB
 							utils_img_convert((AVPicture *)frameRGB, PIX_FMT_BGR24,
@@ -108,6 +106,15 @@ static int video_thread(void *arg)
 							vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
 								frameRGB->data[0], vs->yuvFrame->width*vs->yuvFrame->height * 3, 
 								vs->fpsState.estFps, vs);
+						}
+						else if (FMT_JPEG) {
+							uint8_t* buf = NULL;
+							unsigned int size = utils_encode_jpeg(vs->codecOCtx, vs->pict_size, vs->yuvFrame, &buf);
+							vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
+								buf, size, vs->fpsState.estFps, vs);
+							if (NULL != buf) {
+								free(buf);
+							}
 						}
 					}
 				} 
