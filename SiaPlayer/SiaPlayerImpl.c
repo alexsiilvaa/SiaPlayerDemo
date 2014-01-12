@@ -106,7 +106,8 @@ static int video_thread(void *arg)
 								vs->codecCtx->height);
 							// An image has been written to AVFrame 
 							vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
-								frameRGB->data[0], vs->fpsState.estFps, vs);
+								frameRGB->data[0], vs->yuvFrame->width*vs->yuvFrame->height * 3, 
+								vs->fpsState.estFps, vs);
 						}
 					}
 				} 

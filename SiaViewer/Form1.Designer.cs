@@ -37,6 +37,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.labelEstFps = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboType = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fpsValue)).BeginInit();
             this.SuspendLayout();
@@ -131,11 +133,33 @@
             this.labelEstFps.TabIndex = 9;
             this.labelEstFps.Text = "0.00";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(385, 191);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Callback Frame:";
+            // 
+            // comboType
+            // 
+            this.comboType.FormattingEnabled = true;
+            this.comboType.Items.AddRange(new object[] {
+            "RGB24",
+            "JPEG"});
+            this.comboType.Location = new System.Drawing.Point(388, 207);
+            this.comboType.Name = "comboType";
+            this.comboType.Size = new System.Drawing.Size(77, 21);
+            this.comboType.TabIndex = 11;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(477, 321);
+            this.Controls.Add(this.comboType);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.labelEstFps);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -166,6 +190,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label labelEstFps;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboType;
 
     }
 }

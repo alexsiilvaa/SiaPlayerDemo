@@ -28,28 +28,28 @@ namespace SiaViewer
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate void FrameDecodedCallback(int FrameWidth, int FrameHeight, 
-            IntPtr FrameData, double estFps, IntPtr videoId);
+            IntPtr FrameData, int size, double estFps, IntPtr videoId);
 
         private FrameDecodedCallback callback;
         private IntPtr videoInstanceId;
 
         public Form1()
         {
-            callback = (width, height, data, estFps, videoId) => {
+            callback = (width, height, data, size, estFps, videoId) => {
                 Console.WriteLine("Got frame, width: {0} height: {1} [est. FPS: {2}]", 
                     width, height, estFps);
-                SetRuntimeData(width, height, data, estFps);
+                SetRuntimeData(width, height, data, size, estFps);
             };
             InitializeComponent();
-
+            comboType.SelectedIndex = FMT_JPEG;
         }
 
-        public void SetRuntimeData(int width, int height, IntPtr img, double estFps)
+        public void SetRuntimeData(int width, int height, IntPtr img, int size, double estFps)
         {
             if (InvokeRequired)
             {
                 // We're on a thread other than the GUI thread
-                Invoke(new MethodInvoker(() => SetRuntimeData(width, height, img, estFps)));
+                Invoke(new MethodInvoker(() => SetRuntimeData(width, height, img, size, estFps)));
                 return;
             }
             pictureBox.Image = new Bitmap(width,height,3*width,PixelFormat.Format24bppRgb,img);
@@ -60,7 +60,8 @@ namespace SiaViewer
         {
             if (IntPtr.Zero == videoInstanceId)
             {
-                StartDecoding(textUrl.Text, (double)fpsValue.Value, FMT_BGR_24BPP, callback, ref videoInstanceId);
+                StartDecoding(textUrl.Text, (double)fpsValue.Value, 
+                    comboType.SelectedIndex, callback, ref videoInstanceId);
             }
         }
 
