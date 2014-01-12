@@ -2,6 +2,7 @@
 #define VIDEO_STATE_H
 
 #include "FrameDecodedCallback.h"
+#include "FmtOutType.h"
 
 #include <libavcodec\avcodec.h>
 #include <libavformat\avformat.h>
@@ -30,13 +31,15 @@ typedef struct
 	char* fileName;
 	int videoStreamIdx;
 	AVCodecContext* codecCtx;
+	AVCodecContext* codecOCtx;
+	int pict_size;
 	AVCodec* codec;
 	AVFrame* yuvFrame; 
 	SDL_Thread* videoThread;
 	FrameDecodedCallback frameCallback;
 	struct FpsState fpsState;
 	struct FpsUserState fpsUserState;
-
+	enum FmtOutType fmt_out_type;
 
 } VideoState;
 

@@ -1,7 +1,8 @@
 #include "SiaUtils.h"
 #include "libavutil\log.h" 
 #include "libavutil\error.h" 
-#include <libswscale\swscale.h>
+#include "libswscale\swscale.h"
+#include "libavcodec\avcodec.h"
 #include <string.h>
 
 void print_error(const char *filename, int err)
@@ -39,6 +40,55 @@ long utils_fps2ticks(double fps)
 {
 	return (long)((1. / fps) * CLOCKS_PER_SEC);
 }
+
+int utils_init_jpegcodec(AVCodecContext** codecCtx, int* pict_size,
+	int width, int height, AVRational time_base, const char* filename)
+{
+	int ret = 0;
+	AVCodecContext* pCodecCtx;
+	AVCodec* pCodec;
+
+	*pict_size = avpicture_get_size(PIX_FMT_YUVJ420P, width, height);
+	HANDLE_ERROR3(pCodec = avcodec_find_encoder(AV_CODEC_ID_MJPEG), "Codec not found\n")
+	HANDLE_ERROR3(*codecCtx = avcodec_alloc_context3(pCodec), "Could not allocate video codec context\n")
+
+	pCodecCtx = (*codecCtx);
+	pCodecCtx->width = width;
+	pCodecCtx->height = height;
+	pCodecCtx->time_base = time_base;
+	pCodecCtx->pix_fmt = PIX_FMT_YUVJ420P; // planar YUV 4:2:0, 12bpp, full scale (JPEG)
+	pCodecCtx->mb_lmin = pCodecCtx->lmin = pCodecCtx->qmin * FF_QP2LAMBDA;
+	pCodecCtx->mb_lmax = pCodecCtx->lmax = pCodecCtx->qmax * FF_QP2LAMBDA;
+	pCodecCtx->flags = CODEC_FLAG_QSCALE;
+	pCodecCtx->global_quality = pCodecCtx->qmin * FF_QP2LAMBDA;
+
+	HANDLE_ERROR(avcodec_open2(pCodecCtx, pCodec, NULL), filename,
+		"Failed to open jpeg codec")
+fail:
+	return ret;
+}
+
+int utils_encode_jpeg(AVCodecContext* codecCtx, int pict_size, 
+	AVFrame *frame, int8_t** buf)
+{
+	//FILE                   *JPEGFile;
+	int ret = -1;
+	
+	*buf = (uint8_t *)malloc(pict_size);
+	if (*buf == NULL)
+		return (-1);
+	memset(*buf, 0, pict_size);
+	
+	ret = avcodec_encode_video(
+		codecCtx, *buf, pict_size, frame);
+
+	/*	JPEGFile = fopen("test.jpg", "wb");
+	fwrite(*buf, 1, ret, JPEGFile);
+	fclose(JPEGFile); */
+
+	return ret;
+}
+
 
 
 

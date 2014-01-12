@@ -92,6 +92,7 @@ copy "$(SolutionDir)\SDL-1.2.15\shared\*.dll" "..\SiaViewer\bin\Debug\"
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="FmtOutType.h" />
     <ClInclude Include="FrameDecodedCallback.h" />
     <ClInclude Include="inttypes.h" />
     <ClInclude Include="SiaPlayer.h" />

@@ -13,9 +13,12 @@ namespace SiaViewer
 {
     public partial class Form1 : Form
     {
+        public const int FMT_BGR_24BPP = 0;
+        public const int FMT_JPEG = 1;
+
         [DllImport("SiaPlayer.dll")]
         private static extern void StartDecoding(string url, double userFps, 
-            FrameDecodedCallback callback, ref IntPtr videoId);
+            int fmt_out_type, FrameDecodedCallback callback, ref IntPtr videoId);        
 
         [DllImport("SiaPlayer.dll")]
         private static extern void StopDecoding(ref IntPtr videoId);
@@ -57,7 +60,7 @@ namespace SiaViewer
         {
             if (IntPtr.Zero == videoInstanceId)
             {
-                StartDecoding(textUrl.Text, (double)fpsValue.Value, callback, ref videoInstanceId);
+                StartDecoding(textUrl.Text, (double)fpsValue.Value, FMT_BGR_24BPP, callback, ref videoInstanceId);
             }
         }
 

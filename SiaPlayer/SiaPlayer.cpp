@@ -6,16 +6,17 @@ extern "C" {
 #include "VideoState.h"
 
 	SIAPLAYER_API SiaRet __stdcall 
-		StartDecoding(const char* input_filename, double fps, 
-		FrameDecodedCallback frameCallback, void** decoder_id)
+		StartDecoding(const char* input_filename, double fps,
+		enum FmtOutType fmt_out_type, FrameDecodedCallback frame_callback, void** decoder_id)
 	{
 		VideoState* vs;
 		if (NULL == decoder_id || fps <= 0)
 			return WRONG_PARAMS;
-		if (stream_open(input_filename, frameCallback, &vs) < 0) {
+		if (stream_open(input_filename, frame_callback, &vs) < 0) {
 			return FAILED_OPEN_STREAM;
 		}
 		set_user_fps(fps, vs);
+		vs->fmt_out_type = fmt_out_type;
 		if (start_video_thread(vs) < 0) {
 			vs_delete(vs);
 			return FAILED_START_THREAD;

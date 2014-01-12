@@ -5,13 +5,6 @@
 #include <libavcodec\avcodec.h>
 #include <libavformat\avformat.h>
 
-#define HANDLE_ERROR(f,filename,msg) { int err; if ((err=f)<0) { \
-	        print_error(filename, err); \
-			fprintf(stderr, msg); \
-			ret = -1; \
-			goto fail; \
-		} }
-
 #define SAFE_OP(f, mutex) { if (SDL_LockMutex(mutex) == 0) { \
 				f; \
 				SDL_UnlockMutex(mutex); \
@@ -81,13 +74,15 @@ static int video_thread(void *arg)
 	int frameFinished, numBytes;
 	uint8_t *buffer;
 
-	frameRGB = av_frame_alloc();
-	// Determine required buffer size and allocate buffer
-	numBytes=avpicture_get_size(PIX_FMT_RGB24, vs->codecCtx->width,
-			      vs->codecCtx->height);
-	buffer=(uint8_t *)av_malloc(numBytes*sizeof(uint8_t));
-	avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_BGR24,
-		 vs->codecCtx->width, vs->codecCtx->height);
+	if (FMT_BGR_24BPP == vs->fmt_out_type) {
+		frameRGB = av_frame_alloc();
+		// Determine required buffer size and allocate buffer
+		numBytes = avpicture_get_size(PIX_FMT_RGB24, vs->codecCtx->width,
+			vs->codecCtx->height);
+		buffer = (uint8_t *)av_malloc(numBytes*sizeof(uint8_t));
+		avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_BGR24,
+			vs->codecCtx->width, vs->codecCtx->height);
+	}
 
 	while(av_read_frame(vs->formatCtx, &packet)>=0) {
 		// Is this a packet from the video stream?
@@ -102,13 +97,17 @@ static int video_thread(void *arg)
 					clock_t currTick = clock();
 					utils_compute_estfps(&vs->fpsState, currTick, FRAMES_FPS_AVG);
 					if (!drop_packet(&vs->fpsUserState, currTick)) {
-						// Convert the image from its native format to RGB
-						utils_img_convert((AVPicture *)frameRGB, PIX_FMT_BGR24,
-							(AVPicture*)vs->yuvFrame, vs->codecCtx->pix_fmt, vs->codecCtx->width,
-							vs->codecCtx->height);
-						// An image has been written to AVFrame 
-						vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
-							frameRGB->data[0], vs->fpsState.estFps, vs);
+						uint8_t* jpegBuff; 
+						utils_encode_jpeg(vs->codecOCtx, vs->pict_size, vs->yuvFrame, &jpegBuff);
+						if (FMT_BGR_24BPP == vs->fmt_out_type) {
+							// Convert the image from its native format to RGB
+							utils_img_convert((AVPicture *)frameRGB, PIX_FMT_BGR24,
+								(AVPicture*)vs->yuvFrame, vs->codecCtx->pix_fmt, vs->codecCtx->width,
+								vs->codecCtx->height);
+							// An image has been written to AVFrame 
+							vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
+								frameRGB->data[0], vs->fpsState.estFps, vs);
+						}
 					}
 				} 
 				// If frameFinished == 0, the packet didn't have enough data to read
@@ -120,9 +119,10 @@ static int video_thread(void *arg)
 	}    
 	// We reached EOF 
 
-	// Free the RGB image
-	av_free(buffer);
-	av_free(frameRGB);
+	if (FMT_BGR_24BPP == vs->fmt_out_type) {
+		av_free(buffer);
+		av_free(frameRGB);
+	}
 	return 0;
 }
 
@@ -142,9 +142,12 @@ int stream_open(const char *filename, FrameDecodedCallback frameCallback, VideoS
 			"stream information\n");
 	HANDLE_ERROR(open_video_codec(*vs),filename,"Could not open video codec " \
 			"stream information\n");
+	
+	HANDLE_ERROR2(utils_init_jpegcodec(&(*vs)->codecOCtx, &(*vs)->pict_size,
+		(*vs)->codecCtx->width, (*vs)->codecCtx->height, (*vs)->codecCtx->time_base, filename),
+		"Could not initialise jpeg codec");
 
 	(*vs)->yuvFrame = av_frame_alloc();
-
 fail:
 	if (0 != ret) {
 		vs_delete(*vs);
