@@ -8,6 +8,8 @@
 
 void print_error(const char *filename, int err);
 
+void print_error2(int err);
+
 int utils_img_convert(AVPicture* dst, enum AVPixelFormat dst_pix_fmt, 
 	AVPicture* src, enum AVPixelFormat pix_fmt, int width, int height);
 
@@ -45,7 +47,7 @@ int utils_encode_jpeg(AVCodecContext* codecCtx, int pict_size,
 	goto fail; \
 } }
 
-#define HANDLE_ERROR2(f,msg) { if ((f<0)) { \
+#define HANDLE_ERROR2(f,msg) { if (((f)<0)) { \
 	fprintf(stderr, msg); \
 	ret = -1; \
 	goto fail; \

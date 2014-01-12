@@ -11,7 +11,15 @@ void print_error(const char *filename, int err)
     const char *errbuf_ptr = errbuf;
     if (av_strerror(err, errbuf, sizeof(errbuf)) < 0)
         errbuf_ptr = strerror(AVUNERROR(err));
-    av_log(NULL, AV_LOG_ERROR, "%s: %s\n", filename, errbuf_ptr);
+	if (NULL != filename)
+		av_log(NULL, AV_LOG_ERROR, "%s: %s\n", filename, errbuf_ptr);
+	else
+		av_log(NULL, AV_LOG_ERROR, "%s\n", errbuf_ptr);
+}
+
+void print_error2(int err)
+{
+	print_error(NULL, err);
 }
 
 int utils_img_convert(AVPicture* dst, enum AVPixelFormat dst_pix_fmt, 
@@ -71,7 +79,7 @@ fail:
 int utils_encode_jpeg(AVCodecContext* codecCtx, int pict_size, 
 	AVFrame *frame, int8_t** buf)
 {
-	//FILE                   *JPEGFile;
+	//FILE *JPEGFile;
 	int ret = -1;
 	
 	*buf = (uint8_t *)malloc(pict_size);

@@ -1,6 +1,8 @@
 #include "SiaPlayerImpl.h"
 #include "SiaUtils.h"
 #include "VideoState.h"
+#include "SiaRgbFrame.h"
+#include "assert.h"
 
 #include <libavcodec\avcodec.h>
 #include <libavformat\avformat.h>
@@ -65,23 +67,49 @@ static char drop_packet(struct FpsUserState* fpsUserState, clock_t currTick)
 	return 0;
 }
 
+static int notify_callback(VideoState* vs, RgbFrame* rgbFrame)
+{
+	uint8_t* buf = NULL;
+	unsigned int size;
+	int ret = 0;
+	switch (vs->fmt_out_type) {
+	case FMT_BGR_24BPP:
+		// Convert the image from its native format to RGB
+		utils_img_convert((AVPicture*)rgbFrame->frame, PIX_FMT_BGR24,
+			(AVPicture*)vs->yuvFrame, vs->codecCtx->pix_fmt, vs->codecCtx->width,
+			vs->codecCtx->height);
+		vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
+			rgbFrame->frame->data[0], vs->yuvFrame->width*vs->yuvFrame->height * 3,
+			vs->fpsState.estFps, vs);
+		break;
+	case FMT_JPEG:
+		HANDLE_ERROR2(size = utils_encode_jpeg(vs->codecOCtx, vs->pict_size, vs->yuvFrame, &buf),
+			"Failed to encode jpeg picture");
+		vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
+				buf, size, vs->fpsState.estFps, vs);
+		break;
+	default:
+		fprintf(stderr, "Unknown format specified: %d\n", vs->fmt_out_type);
+		assert(0);
+		break;
+	}
+fail:
+	if (NULL != buf) {
+		free(buf);
+	}
+	return ret;
+}
+
 static int video_thread(void *arg)
 {
 #define FRAMES_FPS_AVG 50
 	AVPacket packet;
-	AVFrame* frameRGB;
 	VideoState* vs = (VideoState*)arg;
-	int frameFinished, numBytes;
-	uint8_t *buffer;
+	int frameFinished;
+	RgbFrame* rgbFrame = NULL;
 
 	if (FMT_BGR_24BPP == vs->fmt_out_type) {
-		frameRGB = av_frame_alloc();
-		// Determine required buffer size and allocate buffer
-		numBytes = avpicture_get_size(PIX_FMT_RGB24, vs->codecCtx->width,
-			vs->codecCtx->height);
-		buffer = (uint8_t *)av_malloc(numBytes*sizeof(uint8_t));
-		avpicture_fill((AVPicture *)frameRGB, buffer, PIX_FMT_BGR24,
-			vs->codecCtx->width, vs->codecCtx->height);
+		rgbFrame = rgb_create_frame(vs->codecCtx->width, vs->codecCtx->height);
 	}
 
 	while(av_read_frame(vs->formatCtx, &packet)>=0) {
@@ -97,25 +125,7 @@ static int video_thread(void *arg)
 					clock_t currTick = clock();
 					utils_compute_estfps(&vs->fpsState, currTick, FRAMES_FPS_AVG);
 					if (!drop_packet(&vs->fpsUserState, currTick)) {
-						if (FMT_BGR_24BPP == vs->fmt_out_type) {
-							// Convert the image from its native format to RGB
-							utils_img_convert((AVPicture *)frameRGB, PIX_FMT_BGR24,
-								(AVPicture*)vs->yuvFrame, vs->codecCtx->pix_fmt, vs->codecCtx->width,
-								vs->codecCtx->height);
-							// An image has been written to AVFrame 
-							vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
-								frameRGB->data[0], vs->yuvFrame->width*vs->yuvFrame->height * 3, 
-								vs->fpsState.estFps, vs);
-						}
-						else if (FMT_JPEG) {
-							uint8_t* buf = NULL;
-							unsigned int size = utils_encode_jpeg(vs->codecOCtx, vs->pict_size, vs->yuvFrame, &buf);
-							vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
-								buf, size, vs->fpsState.estFps, vs);
-							if (NULL != buf) {
-								free(buf);
-							}
-						}
+						notify_callback(vs, rgbFrame);						
 					}
 				} 
 				// If frameFinished == 0, the packet didn't have enough data to read
@@ -128,8 +138,7 @@ static int video_thread(void *arg)
 	// We reached EOF 
 
 	if (FMT_BGR_24BPP == vs->fmt_out_type) {
-		av_free(buffer);
-		av_free(frameRGB);
+		rgb_delete_frame(&rgbFrame);
 	}
 	return 0;
 }

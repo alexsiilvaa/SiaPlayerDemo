@@ -97,6 +97,7 @@ copy "$(SolutionDir)\SDL-1.2.15\shared\*.dll" "..\SiaViewer\bin\Debug\"
     <ClInclude Include="inttypes.h" />
     <ClInclude Include="SiaPlayer.h" />
     <ClInclude Include="SiaPlayerImpl.h" />
+    <ClInclude Include="SiaRgbFrame.h" />
     <ClInclude Include="SiaUtils.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="stdint.h" />
@@ -113,6 +114,7 @@ copy "$(SolutionDir)\SDL-1.2.15\shared\*.dll" "..\SiaViewer\bin\Debug\"
     </ClCompile>
     <ClCompile Include="SiaPlayer.cpp" />
     <ClCompile Include="SiaPlayerImpl.c" />
+    <ClCompile Include="SiaRgbFrame.c" />
     <ClCompile Include="SiaUtils.c" />
     <ClCompile Include="VideoState.c" />
   </ItemGroup>
