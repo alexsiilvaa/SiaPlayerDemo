@@ -79,14 +79,14 @@ static int notify_callback(VideoState* vs, RgbFrame* rgbFrame)
 			(AVPicture*)vs->yuvFrame, vs->codecCtx->pix_fmt, vs->codecCtx->width,
 			vs->codecCtx->height);
 		vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
-			rgbFrame->frame->data[0], vs->yuvFrame->width*vs->yuvFrame->height * 3,
+			rgbFrame->frame->data[0], vs->fmt_out_type, vs->yuvFrame->width*vs->yuvFrame->height * 3,
 			vs->fpsState.estFps, vs);
 		break;
 	case FMT_JPEG:
 		HANDLE_ERROR2(size = utils_encode_jpeg(vs->codecOCtx, vs->pict_size, vs->yuvFrame, &buf),
 			"Failed to encode jpeg picture");
 		vs->frameCallback(vs->yuvFrame->width, vs->yuvFrame->height,
-				buf, size, vs->fpsState.estFps, vs);
+				buf, vs->fmt_out_type, size, vs->fpsState.estFps, vs);
 		break;
 	default:
 		fprintf(stderr, "Unknown format specified: %d\n", vs->fmt_out_type);

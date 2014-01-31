@@ -30,31 +30,31 @@ namespace SiaViewer
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate void FrameDecodedCallback(int FrameWidth, int FrameHeight, 
-            IntPtr FrameData, int size, double estFps, IntPtr videoId);
+            IntPtr FrameData, int FrameFormat, int size, double estFps, IntPtr videoId);
 
         private FrameDecodedCallback callback;
         private IntPtr videoInstanceId;
 
         public Form1()
         {
-            callback = (width, height, data, size, estFps, videoId) => {
-                Console.WriteLine("Got frame, width: {0} height: {1} [est. FPS: {2}]", 
-                    width, height, estFps);
-                SetRuntimeData(width, height, data, size, estFps);
+            callback = (width, height, data, format, size, estFps, videoId) => {
+                Console.WriteLine("Got frame, width: {0} height: {1} [est. FPS: {2}, type: {3}]", 
+                    width, height, estFps, format);
+                SetRuntimeData(width, height, data, format, size, estFps);
             };
             InitializeComponent();
             comboType.SelectedIndex = FMT_JPEG;
         }
 
-        public void SetRuntimeData(int width, int height, IntPtr img, int size, double estFps)
+        public void SetRuntimeData(int width, int height, IntPtr img, int format, int size, double estFps)
         {
             if (InvokeRequired)
             {
                 // We're on a thread other than the GUI thread
-                Invoke(new MethodInvoker(() => SetRuntimeData(width, height, img, size, estFps)));
+                Invoke(new MethodInvoker(() => SetRuntimeData(width, height, img, format, size, estFps)));
                 return;
             }
-            switch (comboType.SelectedIndex)
+            switch (format)
             {
                 case FMT_BGR_24BPP:
                     pictureBox.Image = new Bitmap(width, height, 3 * width, PixelFormat.Format24bppRgb, img);
@@ -109,6 +109,15 @@ namespace SiaViewer
         private void fpsValue_ValueChanged(object sender, EventArgs e)
         {
             ChangeFps((double)fpsValue.Value, this.videoInstanceId); 
+        }
+
+        private void comboType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (IntPtr.Zero != videoInstanceId)
+            {
+                btnStop_Click(sender, e);
+                btnStart_Click(sender, e);
+            }
         }
 
     }

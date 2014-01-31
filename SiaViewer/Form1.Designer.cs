@@ -152,6 +152,7 @@
             this.comboType.Name = "comboType";
             this.comboType.Size = new System.Drawing.Size(77, 21);
             this.comboType.TabIndex = 11;
+            this.comboType.SelectedIndexChanged += new System.EventHandler(this.comboType_SelectedIndexChanged);
             // 
             // Form1
             // 
