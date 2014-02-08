@@ -1,0 +1,46 @@
+Step 1)
+Download the MinGW Installation Manager and install all packages in Basic Setup
+Nota: O compilador gcc dever ser >= 3.4.5
+Add c:\MinGW\bin on you PATH
+
+Download yasm-1.2.0-win32 and extract it at C:\yasm\ 
+(or win64 for 64bit builds from http://www.tortall.net/projects/yasm/releases/)
+
+Step 2)
+Open up visual studio 2012 developer console
+( under Start>All Programs> VS12> VS Tools> Developer command prompt for VS12 ) and Navigate to 
+c:\MinGW\msys\1.0>
+
+Step 3)
+Run msys.bat from here.
+
+Step 4)
+Change your current home directory to ffmpeg ie "cd C:/dev/siavid/SiaPlayerDemo/3rdParty/FFmpeg"
+
+Step 5) 
+Rename mingw link.exe to avoid conflict with MS link.exe with "mv /bin/link.exe /bin/mingw_link.exe". Now running link.exe should point at MS link.
+Double check with the command "which link" it should respond something like "/c/Program Files (x86)/Microsoft Visual Studio 11.0/VC/Bin/link.exe"
+
+Step 6) 
+Extend default path with the command "export PATH=$PATH:C:/dev/siavid/SiaPlayerDemo/3rdParty/FFmpeg"
+Check the result, with the command "echo $PATH". It should report all Visual Studio's paths, plus c:\ffmpeg
+
+Step 7)
+type the commands below. (a) and (b) take some time to complete (about 5-10 minutes)
+a) "./configure --prefix=ffmpeg/ --enable-shared --extra-cflags=-I/c/MinGW/include --yasmexe='C:/yasm/yasm-1.2.0-win32.exe' --enable-gpl --cpu=i686"
+b) "make"
+c) "make install"
+
+Step 8) Now under "C:\ffmpeg\ffmpeg\lib" you should see some *.def and *.a files. Its time to convert *.a to standard MS *.lib files.
+Change directory using the command "cd .\ffmpeg\lib"
+Take a file list with "ls -l" command.
+For every *.a file you see, use the following command 
+lib /machine:i386 /def:avcodec-55.def /out:avcodec.lib
+lib /machine:i386 /def:avformat-55.def /out:avformat.lib
+lib /machine:i386 /def:avutil-52.def /out:avutil.lib
+lib /machine:i386 /def:swscale-2.def /out:swscale.lib
+
+Step 8)
+
+You are ready. Just include your *.lib libraries in the linker input and Additional Dependecies option, and add your project includes, to the msinttypes (inttypes.h & stdint.h) you downloaded from the 1st step.
+You may also set References to No (/OPT:NOREF) under the linker optimization settings, project properties>linker>optimization>References to No (/OPT:NOREF)
