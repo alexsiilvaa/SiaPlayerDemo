@@ -46,6 +46,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)\SDL-1.2.15\include;$(SolutionDir)\fmpeg-dev\include;$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -78,18 +79,26 @@ copy "$(SolutionDir)\SDL-1.2.15\shared\*.dll" "..\SiaViewer\bin\Debug\"
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;_USRDLL;SIAPLAYERDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_WINDOWS;_USRDLL;SIAPLAYER_EXPORTS;__STDC_CONSTANT_MACROS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>$(SolutionDir)\fmpeg-dev\lib\swscale.lib;$(SolutionDir)\fmpeg-dev\lib\avcodec.lib;$(SolutionDir)\fmpeg-dev\lib\avformat.lib;$(SolutionDir)\fmpeg-dev\lib\avutil.lib;$(SolutionDir)\SDL-1.2.15\lib\x86\SDL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(OutDir)\$(ProjectName).dll" "..\SiaViewer\bin\Release\$(ProjectName).dll"
+copy "$(SolutionDir)\fmpeg-dev\shared\*.dll" "..\SiaViewer\bin\Release\"
+copy "$(SolutionDir)\SDL-1.2.15\shared\*.dll" "..\SiaViewer\bin\Release\"
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="FmtOutType.h" />
