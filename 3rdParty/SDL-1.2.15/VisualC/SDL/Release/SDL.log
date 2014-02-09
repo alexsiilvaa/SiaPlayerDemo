@@ -1,0 +1,158 @@
+﻿Build started 8/02/2014 22:28:16.
+     1>Project "C:\dev\siavid\SiaPlayerDemo\3rdParty\SDL-1.2.15\VisualC\SDL\SDL.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\dev\siavid\SiaPlayerDemo\3rdParty\SDL-1.2.15\VisualC\SDL\\..\..\include" /Zi /nologo /W3 /WX- /O2 /Ob1 /Oy- /D _CRT_SECURE_NO_DEPRECATE /D NDEBUG /D _WINDOWS /D _WIN32_WINNT=0x0400 /D _VC80_UPGRADE=0x0700 /D _WINDLL /GF /Gm- /EHsc /MD /GS- /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt ..\..\src\SDL.c ..\..\src\events\SDL_active.c ..\..\src\audio\SDL_audio.c ..\..\src\audio\SDL_audiocvt.c ..\..\src\video\SDL_blit.c ..\..\src\video\SDL_blit_0.c ..\..\src\video\SDL_blit_1.c ..\..\src\video\SDL_blit_A.c ..\..\src\video\SDL_blit_N.c ..\..\src\video\SDL_bmp.c ..\..\src\cdrom\SDL_cdrom.c ..\..\src\cpuinfo\SDL_cpuinfo.c ..\..\src\video\SDL_cursor.c ..\..\src\audio\windib\SDL_dibaudio.c ..\..\src\video\windib\SDL_dibevents.c ..\..\src\video\windib\SDL_dibvideo.c ..\..\src\audio\disk\SDL_diskaudio.c ..\..\src\audio\dummy\SDL_dummyaudio.c ..\..\src\audio\windx5\SDL_dx5audio.c ..\..\src\video\Windx5\SDL_dx5events.c ..\..\src\video\Windx5\SDL_dx5video.c ..\..\src\video\windx5\SDL_dx5yuv.c ..\..\src\SDL_error.c ..\..\src\events\SDL_events.c ..\..\src\events\SDL_expose.c ..\..\src\SDL_fatal.c ..\..\src\video\SDL_gamma.c ..\..\src\stdlib\SDL_getenv.c ..\..\src\stdlib\SDL_iconv.c ..\..\src\joystick\SDL_joystick.c ..\..\src\events\SDL_keyboard.c ..\..\src\stdlib\SDL_malloc.c ..\..\src\audio\SDL_mixer.c ..\..\src\audio\SDL_mixer_MMX_VC.c ..\..\src\joystick\win32\SDL_mmjoystick.c ..\..\src\events\SDL_mouse.c ..\..\src\video\dummy\SDL_nullevents.c ..\..\src\video\dummy\SDL_nullmouse.c ..\..\src\video\dummy\SDL_nullvideo.c ..\..\src\video\SDL_pixels.c ..\..\src\stdlib\SDL_qsort.c ..\..\src\events\SDL_quit.c ..\..\src\events\SDL_resize.c ..\..\src\video\SDL_RLEaccel.c ..\..\src\file\SDL_rwops.c ..\..\src\stdlib\SDL_stdlib.c ..\..\src\video\SDL_stretch.c ..\..\src\stdlib\SDL_string.c ..\..\src\video\SDL_surface.c ..\..\src\cdrom\win32\SDL_syscdrom.c ..\..\src\thread\generic\SDL_syscond.c ..\..\src\video\wincommon\SDL_sysevents.c ..\..\src\loadso\win32\SDL_sysloadso.c ..\..\src\video\wincommon\SDL_sysmouse.c ..\..\src\thread\win32\SDL_sysmutex.c ..\..\src\thread\win32\SDL_syssem.c ..\..\src\thread\win32\SDL_systhread.c ..\..\src\timer\win32\SDL_systimer.c ..\..\src\video\wincommon\SDL_syswm.c ..\..\src\thread\SDL_thread.c ..\..\src\timer\SDL_timer.c ..\..\src\video\SDL_video.c ..\..\src\audio\SDL_wave.c ..\..\src\video\wincommon\SDL_wingl.c ..\..\src\video\SDL_yuv.c ..\..\src\video\SDL_yuv_sw.c
+         SDL.c
+         SDL_active.c
+         SDL_audio.c
+         SDL_audiocvt.c
+         SDL_blit.c
+         SDL_blit_0.c
+         SDL_blit_1.c
+         SDL_blit_A.c
+         SDL_blit_N.c
+         SDL_bmp.c
+         SDL_cdrom.c
+         SDL_cpuinfo.c
+         SDL_cursor.c
+         SDL_dibaudio.c
+         SDL_dibevents.c
+         SDL_dibvideo.c
+         SDL_diskaudio.c
+         SDL_dummyaudio.c
+         SDL_dx5audio.c
+     1>..\..\src\audio\windx5\SDL_dx5audio.c(69): warning C4996: 'GetVersionExA': was declared deprecated
+                 C:\Program Files\Windows Kits\8.1\Include\um\sysinfoapi.h(433) : see declaration of 'GetVersionExA'
+         SDL_dx5events.c
+         Generating Code...
+         Compiling...
+         SDL_dx5video.c
+         SDL_dx5yuv.c
+         SDL_error.c
+         SDL_events.c
+         SDL_expose.c
+         SDL_fatal.c
+         SDL_gamma.c
+         SDL_getenv.c
+         SDL_iconv.c
+         SDL_joystick.c
+         SDL_keyboard.c
+         SDL_malloc.c
+         SDL_mixer.c
+         SDL_mixer_MMX_VC.c
+         SDL_mmjoystick.c
+         SDL_mouse.c
+         SDL_nullevents.c
+         SDL_nullmouse.c
+         SDL_nullvideo.c
+         SDL_pixels.c
+         Generating Code...
+         Compiling...
+         SDL_qsort.c
+         SDL_quit.c
+         SDL_resize.c
+         SDL_RLEaccel.c
+         SDL_rwops.c
+     1>..\..\src\file\SDL_rwops.c(115): warning C4996: 'GetVersionExA': was declared deprecated
+                 C:\Program Files\Windows Kits\8.1\Include\um\sysinfoapi.h(433) : see declaration of 'GetVersionExA'
+         SDL_stdlib.c
+         SDL_stretch.c
+         SDL_string.c
+         SDL_surface.c
+         SDL_syscdrom.c
+         SDL_syscond.c
+         SDL_sysevents.c
+     1>..\..\src\video\wincommon\SDL_sysevents.c(826): warning C4996: 'GetVersionExA': was declared deprecated
+                 C:\Program Files\Windows Kits\8.1\Include\um\sysinfoapi.h(433) : see declaration of 'GetVersionExA'
+         SDL_sysloadso.c
+         SDL_sysmouse.c
+         SDL_sysmutex.c
+         SDL_syssem.c
+         SDL_systhread.c
+         SDL_systimer.c
+         SDL_syswm.c
+         SDL_thread.c
+         Generating Code...
+         Compiling...
+         SDL_timer.c
+         SDL_video.c
+         SDL_wave.c
+         SDL_wingl.c
+         SDL_yuv.c
+         SDL_yuv_sw.c
+         Generating Code...
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1186,5): warning MSB8012: TargetPath(C:\dev\siavid\SiaPlayerDemo\3rdParty\SDL-1.2.15\VisualC\Release\SDL.dll) does not match the Linker's OutputFile property value (C:\dev\siavid\SiaPlayerDemo\3rdParty\SDL-1.2.15\VisualC\SDL\Release\SDL.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\Release/SDL.dll" /INCREMENTAL:NO /NOLOGO winmm.lib dxguid.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\Release/SDL.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\dev\siavid\SiaPlayerDemo\3rdParty\SDL-1.2.15\VisualC\Release\SDL.lib" /MACHINE:X86 /SAFESEH /MACHINE:I386 /DLL Release\SDL.obj
+         Release\SDL_active.obj
+         Release\SDL_audio.obj
+         Release\SDL_audiocvt.obj
+         Release\SDL_blit.obj
+         Release\SDL_blit_0.obj
+         Release\SDL_blit_1.obj
+         Release\SDL_blit_A.obj
+         Release\SDL_blit_N.obj
+         Release\SDL_bmp.obj
+         Release\SDL_cdrom.obj
+         Release\SDL_cpuinfo.obj
+         Release\SDL_cursor.obj
+         Release\SDL_dibaudio.obj
+         Release\SDL_dibevents.obj
+         Release\SDL_dibvideo.obj
+         Release\SDL_diskaudio.obj
+         Release\SDL_dummyaudio.obj
+         Release\SDL_dx5audio.obj
+         Release\SDL_dx5events.obj
+         Release\SDL_dx5video.obj
+         Release\SDL_dx5yuv.obj
+         Release\SDL_error.obj
+         Release\SDL_events.obj
+         Release\SDL_expose.obj
+         Release\SDL_fatal.obj
+         Release\SDL_gamma.obj
+         Release\SDL_getenv.obj
+         Release\SDL_iconv.obj
+         Release\SDL_joystick.obj
+         Release\SDL_keyboard.obj
+         Release\SDL_malloc.obj
+         Release\SDL_mixer.obj
+         Release\SDL_mixer_MMX_VC.obj
+         Release\SDL_mmjoystick.obj
+         Release\SDL_mouse.obj
+         Release\SDL_nullevents.obj
+         Release\SDL_nullmouse.obj
+         Release\SDL_nullvideo.obj
+         Release\SDL_pixels.obj
+         Release\SDL_qsort.obj
+         Release\SDL_quit.obj
+         Release\SDL_resize.obj
+         Release\SDL_RLEaccel.obj
+         Release\SDL_rwops.obj
+         Release\SDL_stdlib.obj
+         Release\SDL_stretch.obj
+         Release\SDL_string.obj
+         Release\SDL_surface.obj
+         Release\SDL_syscdrom.obj
+         Release\SDL_syscond.obj
+         Release\SDL_sysevents.obj
+         Release\SDL_sysloadso.obj
+         Release\SDL_sysmouse.obj
+         Release\SDL_sysmutex.obj
+         Release\SDL_syssem.obj
+         Release\SDL_systhread.obj
+         Release\SDL_systimer.obj
+         Release\SDL_syswm.obj
+         Release\SDL_thread.obj
+         Release\SDL_timer.obj
+         Release\SDL_video.obj
+         Release\SDL_wave.obj
+         Release\SDL_wingl.obj
+         Release\SDL_yuv.obj
+         Release\SDL_yuv_sw.obj
+            Creating library C:\dev\siavid\SiaPlayerDemo\3rdParty\SDL-1.2.15\VisualC\Release\SDL.lib and object C:\dev\siavid\SiaPlayerDemo\3rdParty\SDL-1.2.15\VisualC\Release\SDL.exp
+         SDL.vcxproj -> C:\dev\siavid\SiaPlayerDemo\3rdParty\SDL-1.2.15\VisualC\Release\SDL.dll
+     1>Done Building Project "C:\dev\siavid\SiaPlayerDemo\3rdParty\SDL-1.2.15\VisualC\SDL\SDL.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:01:09.97
