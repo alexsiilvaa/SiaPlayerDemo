@@ -3,8 +3,8 @@ Download the MinGW Installation Manager and install all packages in Basic Setup
 Nota: O compilador gcc dever ser >= 3.4.5
 Add c:\MinGW\bin on you PATH
 
-Download yasm-1.2.0-win32 and extract it at C:\yasm\ 
-(or win64 for 64bit builds from http://www.tortall.net/projects/yasm/releases/)
+Download yasm-1.2.0-win32 and put it in C:\yasm\ 
+(yasm-1.2.0-win64.exe for 64 bits)
 
 Step 2)
 Open up visual studio 2012 developer console
@@ -15,19 +15,23 @@ Step 3)
 Run msys.bat from here.
 
 Step 4)
-Change your current home directory to ffmpeg ie "cd C:/dev/siavid/SiaPlayerDemo/3rdParty/FFmpeg"
+Change your current home directory to ffmpeg ie "cd $(ProjectRoot)/3rdParty/FFmpeg"
+f.ex: "cd c:/dev/SiaPlayerDemo/3rdParty/FFmpeg"
+Where ProjectRoot is where the project has been copied to.
 
 Step 5) 
 Rename mingw link.exe to avoid conflict with MS link.exe with "mv /bin/link.exe /bin/mingw_link.exe". Now running link.exe should point at MS link.
 Double check with the command "which link" it should respond something like "/c/Program Files (x86)/Microsoft Visual Studio 11.0/VC/Bin/link.exe"
 
 Step 6) 
-Extend default path with the command "export PATH=$PATH:C:/dev/siavid/SiaPlayerDemo/3rdParty/FFmpeg"
+Extend default path with the command "export PATH=$PATH:$(ProjectRoot)/3rdParty/FFmpeg"
+f.ex: "export PATH=$PATH:c:/dev/SiaPlayerDemo/3rdParty/FFmpeg"
 Check the result, with the command "echo $PATH". It should report all Visual Studio's paths, plus c:\ffmpeg
 
 Step 7)
 type the commands below. (a) and (b) take some time to complete (about 5-10 minutes)
-a) "./configure --prefix=ffmpeg/ --enable-shared --extra-cflags=-I/c/MinGW/include --yasmexe='C:/yasm/yasm-1.2.0-win32.exe' --enable-gpl --cpu=i686"
+a) "./configure --prefix=ffmpeg/ --enable-shared --extra-cflags=-I/c/MinGW/include --yasmexe='C:/yasm/yasm-1.2.0-win32.exe' --enable-gpl --cpu=i686" ... or ...
+a) "./configure --prefix=ffmpeg/ --enable-shared --extra-cflags=-I/c/MinGW/include --yasmexe='C:/yasm/yasm-1.2.0-win64.exe' --enable-gpl --cpu=x86_64" for 64bits
 b) "make"
 c) "make install"
 

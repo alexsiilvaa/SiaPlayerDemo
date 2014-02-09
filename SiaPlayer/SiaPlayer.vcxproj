@@ -126,7 +126,7 @@ copy "$(SolutionDir)\MinGW-RT\*.dll" "..\SiaViewer\bin\Debug\"
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)\fmpeg-dev\lib\swscale.lib;$(SolutionDir)\fmpeg-dev\lib\avcodec.lib;$(SolutionDir)\fmpeg-dev\lib\avformat.lib;$(SolutionDir)\fmpeg-dev\lib\avutil.lib;$(SolutionDir)\SDL-1.2.15\lib\x86\SDL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\fmpeg-dev\lib\swscale.lib;$(SolutionDir)\fmpeg-dev\lib\avcodec.lib;$(SolutionDir)\fmpeg-dev\lib\avformat.lib;$(SolutionDir)\fmpeg-dev\lib\avutil.lib;$(SolutionDir)\SDL-1.2.15\lib\x64\SDL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\dev\siavid\fmpeg-dev\lib;C:\dev\siavid\SDL-1.2.15\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ShowProgress>NotSet</ShowProgress>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -179,7 +179,7 @@ copy "$(SolutionDir)\MinGW-RT\*.dll" "..\SiaViewer\bin\Release\"</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>$(SolutionDir)\fmpeg-dev\lib\swscale.lib;$(SolutionDir)\fmpeg-dev\lib\avcodec.lib;$(SolutionDir)\fmpeg-dev\lib\avformat.lib;$(SolutionDir)\fmpeg-dev\lib\avutil.lib;$(SolutionDir)\SDL-1.2.15\lib\x86\SDL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)\fmpeg-dev\lib\swscale.lib;$(SolutionDir)\fmpeg-dev\lib\avcodec.lib;$(SolutionDir)\fmpeg-dev\lib\avformat.lib;$(SolutionDir)\fmpeg-dev\lib\avutil.lib;$(SolutionDir)\SDL-1.2.15\lib\x64\SDL.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
