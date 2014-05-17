@@ -16,6 +16,11 @@
 static int retrieve_video_stream(VideoState* vs)
 {
 	int ret = -1;
+
+	// The default value is too high, it may take too much time to choose the AVFormatContext
+	// fields. By setting a smaller value we limit the worst-case scenario and force the system
+	// to work with less information.
+	vs->formatCtx->max_analyze_duration = 50000;
 	if (avformat_find_stream_info(vs->formatCtx, NULL) >= 0) {
 		int i;
 		av_dump_format(vs->formatCtx, 0, vs->fileName, 0);		
@@ -159,7 +164,6 @@ int stream_open(const char *filename, FrameDecodedCallback frameCallback, VideoS
 			"stream information\n");
 	HANDLE_ERROR(open_video_codec(*vs),filename,"Could not open video codec " \
 			"stream information\n");
-	
 	HANDLE_ERROR2(utils_init_jpegcodec(&(*vs)->codecOCtx, &(*vs)->pict_size,
 		(*vs)->codecCtx->width, (*vs)->codecCtx->height, (*vs)->codecCtx->time_base, filename),
 		"Could not initialise jpeg codec");
